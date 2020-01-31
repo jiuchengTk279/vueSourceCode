@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>模版解析之大括号表达式_MVVM</title>
+</head>
+<body>
+    <!-- 
+        模版解析的基本流程：
+        1) 将 el 的所有子节点取出, 添加到一个新建的文档 fragment 对象中 
+        2) 对 fragment 中的所有层次子节点递归进行编译解析处理 
+            * 对大括号表达式文本节点进行解析 
+            * 对元素节点的指令属性进行解析 
+                * 事件指令解析 
+                * 一般指令解析
+        3) 将解析后的 fragment 添加到 el 中显示
+     -->
+
+     <!-- 
+        模版解析的大括号表达式解析
+        1) 根据正则对象得到匹配出的表达式字符串: 子匹配/RegExp.$1 name 
+        2) 从 data 中取出表达式对应的属性值 
+        3) 将属性值设置为文本节点的 textContent
+        简单来说是，先将name的值取出来，根据name的值取出对应的value的值，将value的值插入到文本节点的 textContent
+      -->
+    <div id="test">
+        <p>{{ name }}</p>
+    </div>
+</body>
+<script type="text/javascript" src="./js/mvvm/compile.js"></script>
+<script type="text/javascript" src="js/mvvm/mvvm.js"></script>
+<script type="text/javascript" src="./js/mvvm/observer.js"></script>
+<script type="text/javascript" src="./js/mvvm/watcher.js"></script>
+<script type="text/javascript">
+
+    new MVVM({
+        el: "#test",
+        data: {
+            name: "张三"
+        }
+    })
+
+</script>
+</html>

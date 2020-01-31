@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数据代理的MVVM实现</title>
+</head>
+<body>
+    
+    <!-- 
+        1. vue的数据代理： data对象的所有属性操作，读和写的操作都是通过vm对象代理来操作的
+        2. 好处：通过vm对象就可以方便的操作data中的数据
+        3. 实现：
+            1）通过Object.defineProperty(vm, key, {}) 给vm添加与data对象的属性对应的属性
+            2）所有添加的属性都包括get和set方法
+            3）在get和set方法中去操作data中对应的属性
+    -->
+    
+    <div id="test"></div>
+</body>
+<script type="text/javascript" src="./js/mvvm/compile.js"></script>
+<script type="text/javascript" src="./js/mvvm/mvvm.js"></script>
+<script type="text/javascript" src="./js/mvvm/observer.js"></script>
+<script type="text/javascript" src="./js/mvvm/watcher.js"></script>
+<script>
+
+    const vm = new MVVM({
+        el: "test",
+        data: {
+            name: "张三"
+        }
+    });
+
+    //  vm代理对数据读的操作 
+    console.log(vm.name, vm); // 张三 MVVM {$options: {…}, _data: {…}, $compile: Compile}
+    vm.name = "李四"; // vm代理对数据写的操作
+    console.log(vm._data.name, vm.name, vm); // 李四 李四 MVVM {$options: {…}, _data: {…}, $compile: Compile}
+
+</script>
+</html>

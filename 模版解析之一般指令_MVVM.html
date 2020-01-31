@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>模版解析之一般指令_MVVM</title>
+    <style>
+        .aClass {
+            color: red;
+        }
+        .bClass {
+            color: greenyellow;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 
+        模版解析之一般指令的过程：
+        1) 得到指令名和指令值(表达式) text/html/class msg/myClass 
+        2) 从 data 中根据表达式得到对应的值 
+        3) 根据指令名确定需要操作元素节点的什么属性 * v-text---textContent 属性 * v-html---innerHTML 属性 * v-class--className 属性 
+        4) 将得到的表达式的值设置到对应的属性上 
+        5) 移除元素的指令属性
+    -->
+
+    <div id="test">
+        <p v-text="msg"></p>
+        <p v-html="msg"></p>
+        <p class="aClass" v-class="myClass">测试类名</p>
+    </div>
+
+</body>
+<script type="text/javascript" src="./js/mvvm/compile.js"></script>
+<script type="text/javascript" src="js/mvvm/mvvm.js"></script>
+<script type="text/javascript" src="./js/mvvm/observer.js"></script>
+<script type="text/javascript" src="./js/mvvm/watcher.js"></script>
+<script type="text/javascript">
+
+    new MVVM({
+        el: "#test",
+        data: {
+            msg: '<a href="www.baidu.com">百度</a>',
+            myClass: 'bClass'
+        }
+    })    
+
+</script>
+</html>

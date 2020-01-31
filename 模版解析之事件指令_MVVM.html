@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>模版解析之事件指令_MVVM</title>
+</head>
+<body>
+
+    <div id="test">
+        <p> {{ name }}</p>
+        <button v-on:click="test">测试</button>
+    </div>
+
+</body>
+<script type="text/javascript" src="./js/mvvm/compile.js"></script>
+<script type="text/javascript" src="js/mvvm/mvvm.js"></script>
+<script type="text/javascript" src="./js/mvvm/observer.js"></script>
+<script type="text/javascript" src="./js/mvvm/watcher.js"></script>
+<script type="text/javascript">
+
+    new MVVM({
+        el: "#test",
+        data: {
+            name: "张三"
+        },
+        method: {
+            test() {
+                alert("事件指令测试");
+            }
+        }
+    })
+
+</script>
+</html>
