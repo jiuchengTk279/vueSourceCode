@@ -1,9 +1,9 @@
 function Watcher(vm, exp, cb) {
-  this.cb = cb;  // callback
+  this.cb = cb;  // callback，更新界面的回调
   this.vm = vm;
-  this.exp = exp;
-  this.depIds = {};  // {0: d0, 1: d1, 2: d2}
-  this.value = this.get();
+  this.exp = exp; // 表达式
+  this.depIds = {};  // 包含所有相关的dep的容器对象  {0: d0, 1: d1, 2: d2}
+  this.value = this.get(); // 得到表达式的初始值保存
 }
 
 Watcher.prototype = {
@@ -23,22 +23,26 @@ Watcher.prototype = {
     }
   },
   addDep: function (dep) {
+    // 判断watcher与dep之间是否建立关系
     if (!this.depIds.hasOwnProperty(dep.id)) {
-      // 建立dep到watcher
+      // 建立dep到watcher，将watcher添加到dep中，用于更新
       dep.addSub(this);
-      // 建立watcher到dep的关系
+      // 建立watcher到dep的关系，将dep添加到watcher中，用于防止重复建立关系
       this.depIds[dep.id] = dep;
     }
   },
+  // 得到表达式对应的值，建立watcher与deep之间的关系
   get: function () {
+    // 给dep指定当前的watcher
     Dep.target = this;
-    // 获取当前表达式的值, 内部会导致属性的get()调用
+    // 获取当前表达式的值, 内部会导致属性的get()调用，内部调用get建立dep和watcher之间的关系
     var value = this.getVMVal();
-
+    // 去除dep中指定的当前的watcher
     Dep.target = null;
     return value;
   },
 
+  // 得到表达式对应的值
   getVMVal: function () {
     var exp = this.exp.split('.');
     var val = this.vm._data;

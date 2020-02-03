@@ -125,16 +125,21 @@ var compileUtil = {
 
   // 解析: v-model
   model: function (node, vm, exp) {
+    // 实现数据的初始化显示和创建对应的watcher
     this.bind(node, vm, exp, 'model');
 
     var me = this,
+      // 得到表达式的值
       val = this._getVMVal(vm, exp);
+      // 给节点绑定input事件监听，输入改变的时寒
     node.addEventListener('input', function (e) {
+      // 得到输入的最新值
       var newValue = e.target.value;
+      // 如果没有变化，直接结束
       if (val === newValue) {
         return;
       }
-
+      // 将最新的value保存给表达式所对应的属性
       me._setVMVal(vm, exp, newValue);
       val = newValue;
     });
@@ -150,12 +155,12 @@ var compileUtil = {
     /*实现初始化显示*/
     // 根据指令名(text)得到对应的更新节点函数
     var updaterFn = updater[dir + 'Updater'];
-    // 如果存在调用来更新节点
+    // 如果存在调用来更新节点，调用函数更新节点
     updaterFn && updaterFn(node, this._getVMVal(vm, exp));
 
-    // 创建表达式对应的watcher对象
-    new Watcher(vm, exp, function (value, oldValue) {/*更新界面*/
-      // 当对应的属性值发生了变化时, 自动调用, 更新对应的节点
+    // 创建表达式一个对应的watcher对象，实现节点的更新显示
+    new Watcher(vm, exp, function (value, oldValue) {/*更新界面*/ // 当表达式对应的一个属性值变化时回调
+      // 当对应的属性值发生了变化时, 自动调用, 更新对应的节点，更新界面的中的指定指点
       updaterFn && updaterFn(node, value, oldValue);
     });
   },

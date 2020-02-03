@@ -28,15 +28,15 @@ Observer.prototype = {
         Object.defineProperty(data, key, {
             enumerable: true, // 可枚举
             configurable: false, // 不能再define
-            get: function() {
-                // 建立dep与watcher的关系
+            get: function() { // 返回值，建立dep与watcher的关系
                 if (Dep.target) {
+                    // 建立关系
                     dep.depend();
                 }
                 // 返回属性值
                 return val;
             },
-            set: function(newVal) {
+            set: function(newVal) { // 监视key属性的变化，更新界面
                 if (newVal === val) {
                     return;
                 }
@@ -70,10 +70,12 @@ function Dep() {
 }
 
 Dep.prototype = {
+    // 将watcher添加到dep中
     addSub: function(sub) {
         this.subs.push(sub);
     },
 
+    // 去建立dep和watcher之间的关系
     depend: function() {
         Dep.target.addDep(this);
     },
@@ -86,7 +88,7 @@ Dep.prototype = {
     },
 
     notify: function() {
-        // 通知所有相关的watcher(一个订阅者)
+        // 通知所有相关的watcher(一个订阅者)，通知watcher更新
         this.subs.forEach(function(sub) {
             sub.update();
         });
